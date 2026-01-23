@@ -58,6 +58,7 @@ public sealed partial class ChatSystem : SharedChatSystem
     [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly ReplacementAccentSystem _wordreplacement = default!;
     [Dependency] private readonly ExamineSystemShared _examineSystem = default!;
+    [Dependency] private readonly SpeechTTSSystem _tts = default!;
 
     // Corvax-TTS-Start: Moved from Server to Shared
     // public const int VoiceRange = 10; // how far voice goes in world units
@@ -388,6 +389,10 @@ public sealed partial class ChatSystem : SharedChatSystem
     {
         if (!_actionBlocker.CanSpeak(source) && !ignoreActionBlocker)
             return;
+
+        // --- TTS TRIGGER ---
+        _tts.AttemptSpeech(source, originalMessage);
+        // -------------------
 
         var message = TransformSpeech(source, originalMessage);
 

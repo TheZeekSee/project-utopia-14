@@ -37,4 +37,13 @@ public sealed partial class CCVars : CVars
     /// </summary>
     public static readonly CVarDef<bool> DebugPow3rDisableParallel =
         CVarDef.Create("debug.pow3r_disable_parallel", false, CVar.SERVERONLY);
+    public static readonly CVarDef<bool> TTSEnabled =
+        CVarDef.Create("tts.enabled", true, CVar.REPLICATED | CVar.SERVER);
+
+    public static readonly CVarDef<string> TTSApiUrl =
+        CVarDef.Create("tts.api_url", "http://127.0.0.1:5000/tts", CVar.REPLICATED | CVar.SERVER);
+
+    public static readonly CVarDef<string> TTSApiToken =
+        CVarDef.Create("tts.api_token", "test", CVar.REPLICATED | CVar.SERVER);
+
 }
