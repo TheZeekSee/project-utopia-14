@@ -1,3 +1,6 @@
+using Robust.Shared.Network;
+using Content.Shared.Chat;
+using Content.Client.Audio;
 using Content.Client.Administration.Managers;
 using Content.Client.Changelog;
 using Content.Client.Chat.Managers;
@@ -150,6 +153,17 @@ namespace Content.Client.Entry
             _configManager.SetCVar("interface.resolutionAutoScaleLowerCutoffX", 520);
             _configManager.SetCVar("interface.resolutionAutoScaleLowerCutoffY", 240);
             _configManager.SetCVar("interface.resolutionAutoScaleMinimum", 0.5f);
+            // Сервер, не кикай!
+            var netMan = IoCManager.Resolve<INetManager>();
+            netMan.RegisterNetMessage<MsgTTSAudio>(msg =>
+            {
+                // Тексты к нам приходят
+                var sysMan = IoCManager.Resolve<IEntitySystemManager>();
+                if (sysMan.TryGetEntitySystem<TTSAudioSystem>(out var ttsSystem))
+                {
+                    ttsSystem.PlayTTSAudio(msg.Data, msg.Source);
+                }
+            });
         }
 
         public override void PostInit()

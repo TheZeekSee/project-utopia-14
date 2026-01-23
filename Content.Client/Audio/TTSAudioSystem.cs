@@ -12,23 +12,6 @@ namespace Content.Client.Audio
     public sealed class TTSAudioSystem : EntitySystem
     {
         [Dependency] private readonly IAudioManager _audioManager = default!;
-        [Dependency] private readonly INetManager _netManager = default!;
-
-        public override void Initialize()
-        {
-            base.Initialize();
-            try
-            {
-                _netManager.RegisterNetMessage<MsgTTSAudio>(OnPacket);
-            }
-            catch (System.ArgumentException) { }
-        }
-
-        private void OnPacket(MsgTTSAudio message)
-        {
-            PlayTTSAudio(message.Data, message.Source);
-        }
-
         public void PlayTTSAudio(byte[] audioData, EntityUid source)
         {
             var stream = new MemoryStream(audioData);
