@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -32,20 +33,57 @@ namespace Content.Server.Chat.Systems
 
             var voiceId = "aidar";
 
-            var audioData = await SynthesizeSpeech(message, voiceId);
+            var audioData = await SynthesizeSpeech(message, voiceId, isRadio: false);
             if (audioData == null) return;
 
-            var msg = new MsgTTSAudio { Data = audioData, Source = source };
+            var msg = new MsgTTSAudio { Data = audioData, Source = source, IsRadio = false };
             _netManager.ServerSendToAll(msg);
         }
 
-        private async Task<byte[]?> SynthesizeSpeech(string text, string speaker)
+        public async void AttemptRadioSpeech(EntityUid source, string message, List<INetChannel> recipients)
+        {
+            if (!_cfg.GetCVar(CCVars.TTSEnabled))
+            {
+                Logger.InfoS("TTS", "Radio TTS: TTS is disabled via CVar");
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(message))
+            {
+                Logger.InfoS("TTS", "Radio TTS: Message is empty");
+                return;
+            }
+            if (recipients == null || recipients.Count == 0)
+            {
+                Logger.InfoS("TTS", "Radio TTS: No recipients provided");
+                return;
+            }
+
+            Logger.InfoS("TTS", $"Radio TTS: Generating audio for '{message}' to {recipients.Count} recipients");
+
+            var voiceId = "aidar";
+
+            // Фильтр идёт от пайтона
+            var audioData = await SynthesizeSpeech(message, voiceId, isRadio: true);
+            if (audioData == null)
+            {
+                Logger.WarningS("TTS", $"Radio TTS: Failed to generate audio for '{message}'");
+                return;
+            }
+
+            Logger.InfoS("TTS", $"Radio TTS: Generated {audioData.Length} bytes of audio, sending to {recipients.Count} recipients");
+
+            // Шлём только тем, кто слушает радио
+            var msg = new MsgTTSAudio { Data = audioData, Source = source, IsRadio = true };
+            _netManager.ServerSendToMany(msg, recipients);
+        }
+
+        private async Task<byte[]?> SynthesizeSpeech(string text, string speaker, bool isRadio = false)
         {
             try
             {
                 var apiUrl = _cfg.GetCVar(CCVars.TTSApiUrl);
                 var token = _cfg.GetCVar(CCVars.TTSApiToken);
-                var payload = new { text, speaker, language = "ru", api_token = token };
+                var payload = new { text, speaker, language = "ru", api_token = token, is_radio = isRadio };
 
                 var content = new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");
 

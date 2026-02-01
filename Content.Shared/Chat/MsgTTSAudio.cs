@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Lidgren.Network;
 using Robust.Shared.Network;
 using Robust.Shared.Serialization;
@@ -12,6 +12,7 @@ namespace Content.Shared.Chat
 
         public byte[] Data { get; set; } = Array.Empty<byte>();
         public EntityUid Source { get; set; }
+        public bool IsRadio { get; set; }
 
         public override void ReadFromBuffer(NetIncomingMessage buffer, IRobustSerializer serializer)
         {
@@ -20,6 +21,7 @@ namespace Content.Shared.Chat
             // Robust way to read EntityID
             var rawId = buffer.ReadInt32();
             Source = new EntityUid(rawId);
+            IsRadio = buffer.ReadBoolean();
         }
 
         public override void WriteToBuffer(NetOutgoingMessage buffer, IRobustSerializer serializer)
@@ -27,6 +29,7 @@ namespace Content.Shared.Chat
             buffer.Write(Data.Length);
             buffer.Write(Data);
             buffer.Write((int)Source);
+            buffer.Write(IsRadio);
         }
     }
 }

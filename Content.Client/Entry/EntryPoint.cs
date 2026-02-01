@@ -161,7 +161,7 @@ namespace Content.Client.Entry
                 var sysMan = IoCManager.Resolve<IEntitySystemManager>();
                 if (sysMan.TryGetEntitySystem<TTSAudioSystem>(out var ttsSystem))
                 {
-                    ttsSystem.PlayTTSAudio(msg.Data, msg.Source);
+                    ttsSystem.PlayTTSAudio(msg.Data, msg.Source, msg.IsRadio);
                 }
             });
         }
