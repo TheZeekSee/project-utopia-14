@@ -70,6 +70,7 @@ namespace Content.Client.Audio
                         .WithPitchScale(1.0f); // Радио идёт от пайтона с нормальным питчем
 
                     if (isRadio)
+                    {
                         audioSource.Global = true;
                         audioSource.Volume = audioParams.Volume;
                         audioSource.Pitch = audioParams.Pitch;
