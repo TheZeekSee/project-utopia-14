@@ -24,15 +24,6 @@
   - type: Sprite
     state: NT_flag
 
-  type: entity
-  parent: BaseFlag
-  id: Utopiaflag
-  name: Utopia Flag
-  description: Слава Утопии! Как прекрасно жить в месте, где все счастливы и довольны!
-  components:
-  - type: Sprite
-    state: Utopia_flag
-
 - type: entity
   parent: BaseFlag
   id: SyndieFlag

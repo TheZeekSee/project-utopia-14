@@ -77,16 +77,6 @@
     sprite: Structures/Decoration/banner.rsi
     state: banner_medical
 
-  type: entity
-  id: BannerUtopia
-  parent: BannerBase
-  name: utopia banner
-  description: Знамя изображающее герб Утопии. Весьма УТОПИЧНОЕ знамя.
-  components:
-  - type: Sprite
-    sprite: Structures/Decoration/banner.rsi
-    state: banner_utopia
-
 - type: entity
   id: BannerRevolution
   parent: BannerBase
