@@ -12,6 +12,9 @@ public static class Palettes
     public static readonly ColorPalette Navy = ColorPalette.FromHexBase("#4f5376", lightnessShift: 0.05f, chromaShift: 0.0045f);
     public static readonly ColorPalette Cyan = ColorPalette.FromHexBase("#42586a", lightnessShift: 0.05f, chromaShift: 0.0045f);
     public static readonly ColorPalette Slate = ColorPalette.FromHexBase("#545562");
+    public static readonly ColorPalette PurpRed = ColorPalette.FromHexBase("#8c4852");
+    public static readonly ColorPalette Malve = ColorPalette.FromHexBase("#5f354a", lightnessShift: 0.05f, chromaShift: 0.0045f);
+    public static readonly ColorPalette Crayola = ColorPalette.FromHexBase("#8f509d", lightnessShift: 0.05f, chromaShift: 0.0045f);
     public static readonly ColorPalette Neutral = ColorPalette.FromHexBase("#555555");
 
     // status tones
